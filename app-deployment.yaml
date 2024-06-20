@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aws-app
+
+
+  template:
+    metadata:
+      labels:
+        app: aws-app
+    spec:
+      containers:
+        - name: aws-app
+          image: vijayk15/aws-app
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: mysql
+            - name: DB_NAME
+              value: mydb
+            - name: DB_USERNAME
+              value: root
+            - name: DB_PASSWORD
+              value: root
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aws-app-ser
+spec:
+  selector:
+    app: aws-app
+  ports:
+    - protocol: "TCP"
+      port: 8080
+      targetPort: 8080
+  type: NodePort
+---
+
+
+
+
+
+
+
+
+
+
+
